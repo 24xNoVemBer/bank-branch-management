@@ -178,6 +178,33 @@ app.get("/api/baocao/tinhluong", async (req, res) => {
   res.json(data);
 });
 
+// Báo cáo 1b: Tải CSV Tính lương nhân viên kinh doanh
+app.get("/api/baocao/tinhluong/csv", async (req, res) => {
+  const { data, error } = await supabase.from('view_tinh_luong_thang_nay').select('*');
+  if (error) return res.status(500).json({ error: error.message });
+  
+  if (!data || data.length === 0) {
+    return res.status(404).json({ error: "Không có dữ liệu" });
+  }
+
+  const headers = ["Mã NV", "Tên Nhân Viên", "Thưởng Tín Dụng (VND)", "Thưởng Gửi Tiền (VND)", "Tổng Thưởng (VND)"];
+  let csvContent = headers.join(",") + "\n";
+
+  data.forEach(item => {
+    const ma_nv = `NV${String(item.ma_nv || item.MA_NV).padStart(3, '0')}`;
+    const ten = `"${item.ten_nhan_vien || item.ten || item.TEN_NHAN_VIEN}"`;
+    const thuong_td = item.thuong_tin_dung || item.THUONG_TIN_DUNG || 0;
+    const thuong_gt = item.thuong_gui_tien || item.THUONG_GUI_TIEN || 0;
+    const tong_thuong = item.tong_thuong_thang || item.TONG_THUONG_THANG || 0;
+    
+    csvContent += `${ma_nv},${ten},${thuong_td},${thuong_gt},${tong_thuong}\n`;
+  });
+
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', 'attachment; filename=Bang_Luong_Nhan_Vien.csv');
+  res.send('\uFEFF' + csvContent);
+});
+
 // Báo cáo 2: Liệt kê giao dịch tín dụng
 app.get("/api/baocao/giaodich-tindung", async (req, res) => {
   const { tu_ngay, den_ngay } = req.query;

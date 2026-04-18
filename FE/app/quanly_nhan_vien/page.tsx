@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-    Search, Plus, Edit2, Trash2, X, User, RefreshCw, Users, LayoutDashboard
+    Search, Plus, Edit2, Trash2, X, User, RefreshCw, Users, LayoutDashboard, Calendar, MapPin, Briefcase, Star
 } from 'lucide-react';
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 

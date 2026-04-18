@@ -198,7 +198,12 @@ export default function AnalyticsReports() {
                        Thống kê Lương & KPI Nhân viên
                     </h2>
                     <div className="flex items-center gap-3">
-                      <button className="px-4 py-1.5 bg-[#1464b4] text-white font-medium rounded-lg hover:bg-[#0f4d8a] transition-colors">Tải CSV</button>
+                      <button 
+                        onClick={() => window.open("http://localhost:8080/api/baocao/tinhluong/csv", "_blank")}
+                        className="px-4 py-1.5 bg-[#1464b4] text-white font-medium rounded-lg hover:bg-[#0f4d8a] transition-colors"
+                      >
+                        Tải CSV
+                      </button>
                     </div>
                   </div>
                   <div className="overflow-x-auto">
